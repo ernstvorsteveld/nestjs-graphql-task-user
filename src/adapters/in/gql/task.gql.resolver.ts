@@ -6,25 +6,30 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { TaskService } from '../task/task.service';
 import { TaskGqlDto, UserGqlDto } from './gql.dto';
-import { UserAPI } from 'src/user/user.api';
+import { UserService } from 'src/ports/out/user/user';
+import { Inject } from '@nestjs/common';
+import { GetTaskPort } from 'src/ports/in/task/get-task.port';
+import { GetTasksPort } from 'src/ports/in/task/get-tasks.port';
 
 @Resolver(() => TaskGqlDto)
 export class TaskResolver {
   constructor(
-    private readonly taskService: TaskService,
-    private readonly userApi: UserAPI,
+    @Inject('GetTaskPort')
+    private readonly getTaskPort: GetTaskPort,
+    @Inject('GetTasksPort')
+    private readonly getTasksPort: GetTasksPort,
+    private readonly userService: UserService,
   ) {}
 
   @Query(() => [TaskGqlDto], { name: 'tasks' })
   findAll() {
-    return this.taskService.findAll();
+    return this.getTasksPort.execute();
   }
 
   @Query(() => TaskGqlDto, { name: 'task' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.taskService.findOne(id);
+    return this.getTaskPort.execute(id);
   }
 
   @ResolveField('user', () => UserGqlDto, { nullable: true })
@@ -32,6 +37,6 @@ export class TaskResolver {
     if (task.userId == null) {
       return Promise.resolve(null);
     }
-    return this.userApi.getUser(task.userId);
+    return this.userService.findOne(task.userId);
   }
 }

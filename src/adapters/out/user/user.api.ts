@@ -1,5 +1,6 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
 import { Injectable } from '@nestjs/common';
+import { UserAPiPayload, UserPayload } from 'src/ports/out/user/user-payload';
 
 @Injectable()
 export class UserAPI extends RESTDataSource {
@@ -32,16 +33,4 @@ export class UserAPI extends RESTDataSource {
     });
     return users;
   }
-}
-
-export class UserPayload {
-  id: string;
-  name: string;
-  age: number;
-}
-
-export class UserAPiPayload {
-  _id: string;
-  name: string;
-  age: number;
 }

@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTaskDto, UpdateTaskDto } from './task.controller.dto';
-import { TaskEntity } from './task.model';
+import { TaskEntity } from 'src/application/domain/domain/task.model';
+import {
+  CreateTaskDto,
+  UpdateTaskDto,
+} from 'src/adapters/in/task/task.controller.dto';
+import { TaskRepository } from 'src/ports/out/task-store/task-repository';
 
 @Injectable()
-export class TaskService {
+export class TaskStoreLocal implements TaskRepository {
   private tasks: TaskEntity[] = [
     {
       id: 1,
@@ -20,42 +24,45 @@ export class TaskService {
   ];
   private nextId = 3;
 
-  findAll(): TaskEntity[] {
-    return this.tasks;
+  async findAll(): Promise<TaskEntity[]> {
+    return Promise.resolve(this.tasks);
   }
 
-  findOne(id: number): TaskEntity {
+  async findOne(id: number): Promise<TaskEntity> {
     const task = this.tasks.find((t) => t.id === id);
     if (!task) {
       throw new NotFoundException(`Task with ID "${id}" not found.`);
     }
-    return task;
+    return Promise.resolve(task);
   }
 
-  create(create: CreateTaskDto): TaskEntity {
+  async create(create: CreateTaskDto): Promise<TaskEntity> {
     const newTask: TaskEntity = {
       id: this.nextId++,
       ...create,
     };
     this.tasks.push(newTask);
-    return newTask;
+    return Promise.resolve(newTask);
   }
 
-  update(id: number, update: UpdateTaskDto): TaskEntity {
-    const task = this.findOne(id);
+  async update(id: number, update: UpdateTaskDto): Promise<TaskEntity> {
     const index = this.tasks.findIndex((i) => i.id === id);
 
-    const updated = { ...task, ...update };
-    this.tasks[index] = updated;
-    return updated;
+    const updated = this.findOne(id).then((t) => {
+      const updated = { ...t, ...update };
+      this.tasks[index] = updated;
+      return updated;
+    });
+    this.tasks[index] = await updated;
+    return Promise.resolve(updated);
   }
 
-  remove(id: number): TaskEntity {
+  async remove(id: number): Promise<TaskEntity> {
     const index = this.tasks.findIndex((t) => t.id === id);
     if (index === -1) {
       throw new NotFoundException(`Task with ID "${id}" not found.`);
     }
     const [removedTask] = this.tasks.splice(index, 1);
-    return removedTask;
+    return Promise.resolve(removedTask);
   }
 }
