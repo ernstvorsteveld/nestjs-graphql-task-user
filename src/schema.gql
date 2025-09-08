@@ -1,0 +1,25 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserGqlDto {
+  id: String!
+  name: String!
+  age: Float
+  tasks: [TaskGqlDto]
+}
+
+type TaskGqlDto {
+  id: Int!
+  name: String!
+  description: String
+  userId: String!
+  user: UserGqlDto
+}
+
+type Query {
+  tasks: [TaskGqlDto!]!
+  task(id: Int!): TaskGqlDto!
+  users: [UserGqlDto!]!
+  user(id: Int!): UserGqlDto!
+}
