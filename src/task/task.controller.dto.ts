@@ -14,7 +14,7 @@ export class CreateTaskDto {
   @IsOptional()
   description?: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   userId?: string;
 }
@@ -28,7 +28,7 @@ export class UpdateTaskDto {
   @IsOptional()
   description?: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   userId?: string;
 }

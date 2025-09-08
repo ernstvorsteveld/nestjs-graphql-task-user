@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
-import { UserAPI } from './user/user.api';
 
 @Module({
   imports: [
@@ -21,7 +18,7 @@ import { UserAPI } from './user/user.api';
       playground: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, UserAPI],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
