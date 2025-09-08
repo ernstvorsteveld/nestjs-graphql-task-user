@@ -32,12 +32,3 @@ export class TaskGqlDto {
   @Field(() => UserGqlDto, { nullable: true })
   user?: UserGqlDto;
 }
-
-@InputType()
-export class TaskInput {
-  @Field()
-  name: string;
-
-  @Field({ nullable: true })
-  description?: string;
-}
