@@ -7,19 +7,20 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { TaskGqlDto, UserGqlDto } from './gql.dto';
-import { UserService } from 'src/ports/out/user/user';
 import { Inject } from '@nestjs/common';
 import { GetTaskPort } from 'src/ports/in/task/get-task.port';
 import { GetTasksPort } from 'src/ports/in/task/get-tasks.port';
+import { GetUserPort } from 'src/ports/in/user/get-user.port';
 
 @Resolver(() => TaskGqlDto)
 export class TaskResolver {
   constructor(
-    @Inject('GetTaskPort')
+    @Inject(GetTaskPort)
     private readonly getTaskPort: GetTaskPort,
-    @Inject('GetTasksPort')
+    @Inject(GetTasksPort)
     private readonly getTasksPort: GetTasksPort,
-    private readonly userService: UserService,
+    @Inject(GetUserPort)
+    private readonly getUserUseCase: GetUserPort,
   ) {}
 
   @Query(() => [TaskGqlDto], { name: 'tasks' })
@@ -37,6 +38,6 @@ export class TaskResolver {
     if (task.userId == null) {
       return Promise.resolve(null);
     }
-    return this.userService.findOne(task.userId);
+    return this.getUserUseCase.execute(task.userId);
   }
 }

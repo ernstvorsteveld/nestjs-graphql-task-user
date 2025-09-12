@@ -23,15 +23,15 @@ import { GetTasksPort } from 'src/ports/in/task/get-tasks.port';
 @Controller('tasks')
 export class TaskController {
   constructor(
-    @Inject('CreateTaskPort')
+    @Inject(CreateTaskPort)
     private readonly createTaskPort: CreateTaskPort,
-    @Inject('UpdateTaskPort')
+    @Inject(UpdateTaskPort)
     private readonly updateTaskPort: UpdateTaskPort,
-    @Inject('RemoveTaskPort')
+    @Inject(RemoveTaskPort)
     private readonly removeTaskPort: RemoveTaskPort,
-    @Inject('GetTaskPort')
+    @Inject(GetTaskPort)
     private readonly getTaskPort: GetTaskPort,
-    @Inject('GetTaskPort')
+    @Inject(GetTaskPort)
     private readonly getTasksPort: GetTasksPort,
   ) {}
 

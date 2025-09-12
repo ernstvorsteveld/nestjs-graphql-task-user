@@ -7,19 +7,19 @@ import { GetUsersPort } from 'src/ports/in/user/get-users.port';
 @Resolver(() => UserGqlDto)
 export class UserResolver {
   constructor(
-    @Inject('GetUserPort')
-    private readonly getUserUseCase: GetUserPort,
-    @Inject('GetUsersPort')
-    private readonly getUsersUseCase: GetUsersPort,
+    @Inject(GetUserPort)
+    private readonly getUserPort: GetUserPort,
+    @Inject(GetUsersPort)
+    private readonly getUsersPort: GetUsersPort,
   ) {}
 
   @Query(() => [UserGqlDto], { name: 'users' })
   findAll() {
-    return this.getUsersUseCase.execute();
+    return this.getUsersPort.execute();
   }
 
   @Query(() => UserGqlDto, { name: 'user' })
   findOne(@Args('id', { type: () => Int }) id: string) {
-    return this.getUserUseCase.execute(id);
+    return this.getUserPort.execute(id);
   }
 }

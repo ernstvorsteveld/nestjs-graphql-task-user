@@ -1,11 +1,12 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TaskEntity } from 'src/application/domain/domain/task.model';
 import { RemoveTaskPort } from 'src/ports/in/task/remove-task.port';
 import { TaskRepository } from 'src/ports/out/task-store/task-repository';
 
+@Injectable()
 export class RemoveTaskUseCase implements RemoveTaskPort {
   constructor(
-    @Inject('TaskRepository')
+    @Inject(TaskRepository)
     private readonly repo: TaskRepository,
   ) {}
 
