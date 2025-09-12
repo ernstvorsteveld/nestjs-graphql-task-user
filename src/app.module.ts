@@ -12,9 +12,9 @@ import { GetUsersPort } from './ports/in/user/get-users.port';
 import { GetUserPort } from './ports/in/user/get-user.port';
 import { UserService } from './ports/out/user/user-service';
 import { GetTaskPort } from './ports/in/task/get-task.port';
-import { getTaskUseCase } from './application/usecases/task/get-task.use-case';
+import { GetTaskUseCase } from './application/usecases/task/get-task.use-case';
 import { GetTasksPort } from './ports/in/task/get-tasks.port';
-import { getTasksUseCase } from './application/usecases/task/get-tasks.use-case';
+import { GetTasksUseCase } from './application/usecases/task/get-tasks.use-case';
 import { TaskStoreLocal } from './adapters/out/task-repository/local/task.repository.local';
 import { TaskRepository } from './ports/out/task-store/task-repository';
 import { UserAPI } from './adapters/out/user/user.api';
@@ -38,15 +38,13 @@ import { CreateTaksUseCase } from './application/usecases/task/create-task.use-c
     TaskResolver,
     UserResolver,
     { provide: TaskRepository, useClass: TaskStoreLocal },
-    { provide: GetTaskPort, useClass: getTaskUseCase },
-    { provide: GetTasksPort, useClass: getTasksUseCase },
+    { provide: GetTaskPort, useClass: GetTaskUseCase },
+    { provide: GetTasksPort, useClass: GetTasksUseCase },
     { provide: GetUsersPort, useClass: GetUsersUseCase },
     { provide: GetUserPort, useClass: GetUserUseCase },
     { provide: UpdateTaskPort, useClass: UpdateTaskUseCase },
     { provide: CreateTaskPort, useClass: CreateTaksUseCase },
     { provide: RemoveTaskPort, useClass: RemoveTaskUseCase },
-    { provide: GetTaskPort, useClass: getTaskUseCase },
-    { provide: GetTasksPort, useClass: getTasksUseCase },
     { provide: UserService, useClass: UserServiceHttp },
     UserAPI,
   ],

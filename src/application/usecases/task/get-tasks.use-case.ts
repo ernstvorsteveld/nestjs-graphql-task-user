@@ -4,7 +4,7 @@ import { GetTasksPort } from 'src/ports/in/task/get-tasks.port';
 import { TaskRepository } from 'src/ports/out/task-store/task-repository';
 
 @Injectable()
-export class getTasksUseCase implements GetTasksPort {
+export class GetTasksUseCase implements GetTasksPort {
   constructor(
     @Inject(TaskRepository)
     private readonly repo: TaskRepository,
